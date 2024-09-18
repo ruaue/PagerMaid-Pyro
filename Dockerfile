@@ -1,4 +1,4 @@
-FROM ubuntu:jammy
+FROM debian:12-slim
 ENV PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin \
     LANG=zh_CN.UTF-8 \
     SHELL=/bin/bash \
@@ -20,9 +20,9 @@ RUN source ~/.bashrc \
         tesseract-ocr \
         tesseract-ocr-eng \
         tesseract-ocr-chi-sim \
-        language-pack-zh-hans \
         sudo \
         git \
+        httping \
         openssl \
         curl \
         wget \
@@ -66,7 +66,7 @@ RUN source ~/.bashrc \
     && ln -sf /usr/bin/python3 /usr/bin/python \
     ## 升级pip
 #   && pip config set global.index-url https://pypi.tuna.tsinghua.edu.cn/simple \
-    && python -m pip install --upgrade pip \
+    && python -m pip install --upgrade pip --break-system-packages \
     ## 添加用户
     && echo "pagermaid ALL=(ALL) NOPASSWD:ALL" > /etc/sudoers.d/pagermaid \
     && useradd pagermaid -r -m -d /pagermaid -s /bin/bash \
@@ -74,8 +74,9 @@ RUN source ~/.bashrc \
     ## 克隆仓库
     && git clone -b master https://github.com/TeamPGM/PagerMaid-Pyro.git /pagermaid/workdir \
     && git config --global pull.ff only \
+    && pip install emoji --break-system-packages \
     ## pip install
-    && pip install -r requirements.txt \
+    && pip install -r requirements.txt --break-system-packages \
     ## 卸载编译依赖，清理安装缓存
     && sudo apt-get purge --auto-remove -y \
         build-essential \

@@ -10,6 +10,7 @@ click==8.1.7
 colorama==0.4.6; platform_system == "Windows"
 coloredlogs==15.0.1
 ecdsa==0.19.0
+emoji==2.13.2
 exceptiongroup==1.2.2; python_version < "3.11"
 fastapi==0.114.2
 h11==0.14.0
