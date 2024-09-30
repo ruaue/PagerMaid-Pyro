@@ -1,4 +1,4 @@
-git+https://github.com/TeamPGM/pyrogram
+git+https://github.com/TeamPGM/pyrogram@pgm_test
 TgCrypto==1.2.5
 Pillow>=9.0.0
 pytz==2023.3.post1
