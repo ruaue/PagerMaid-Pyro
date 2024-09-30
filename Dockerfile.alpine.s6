@@ -1,0 +1,34 @@
+FROM debiansid/containers:alpine
+
+ENV PAGERMAID_DIR=/pagermaid
+ENV TZ=Asia/Shanghai
+ENV LANG=en_US.UTF-8 
+ENV SHELL=/bin/sh
+WORKDIR /pagermaid/workdir
+
+COPY ./ /pagermaid/workdir
+
+RUN apk add --no-cache git sudo imagemagick libmagic curl tzdata neofetch figlet fortune openssl python3 py3-pip \
+    && apk add --no-cache --update --virtual .build-deps gcc python3-dev musl-dev linux-headers \
+    && git config --global pull.ff only \
+    && wget https://repo.tlle.eu.org/alpine/v3.20/main/x86_64/ruaue-keys-1-r0.apk \
+    && apk add --allow-untrusted ruaue-keys-1-r0.apk \
+    && sed -i "1ihttps://repo.tlle.eu.org/alpine/v3.20/main" /etc/apk/repositories \
+    && apk update \
+    && wget https://repo.tlle.eu.org/alpine/v3.20/main/aarch64/s6-overlay-scripts-3.2.0.0-r0.apk \
+    && apk add --no-cache s6-overlay \
+    && apk add ./s6-overlay-scripts-3.2.0.0-r0.apk \
+    && pip install -r requirements.txt  --break-system-packages \
+    && pip install emoji  --break-system-packages \  
+    && pip cache purge \
+    && rm *.apk \
+    && apk del .build-deps
+
+
+
+## run s6 as root
+ ENV MIMALLOC_LARGE_OS_PAGES=1
+ ENV TERM=xterm
+ USER root
+ ENTRYPOINT ["/init"]
+ CMD ["sh", "utils/docker-config.sh"]
