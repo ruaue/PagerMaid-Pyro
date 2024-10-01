@@ -8,7 +8,7 @@ WORKDIR /pagermaid/workdir
 
 COPY ./ /pagermaid/workdir
 
-RUN apk add --no-cache git sudo imagemagick libmagic curl tzdata neofetch figlet fortune openssl \
+RUN apk add --no-cache git sudo imagemagick libmagic curl tzdata neofetch figlet iputils-ping fortune openssl \
     && apk add --no-cache --update --virtual .build-deps gcc musl-dev linux-headers \
     && git config --global pull.ff only \
     && wget https://repo.tlle.eu.org/alpine/v3.20/main/x86_64/ruaue-keys-1-r0.apk \
