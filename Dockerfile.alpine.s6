@@ -19,7 +19,8 @@ RUN apk add --no-cache git sudo imagemagick libmagic curl tzdata neofetch figlet
     && wget https://repo.tlle.eu.org/alpine/v3.20/main/aarch64/s6-overlay-scripts-3.2.0.0-r0.apk \
     && apk add --no-cache s6-overlay \
     && apk add ./s6-overlay-scripts-3.2.0.0-r0.apk \
-    && python -m pip install --upgrade pip \
+    && python -m ensurepip --upgrade \
+    && python -m pip install --upgrade setuptools \
     && pip install -r requirements.txt  --break-system-packages \
     && pip cache purge \
     && rm *.apk \
