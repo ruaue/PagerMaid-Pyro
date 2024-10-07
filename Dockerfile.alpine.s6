@@ -1,4 +1,4 @@
-FROM python:3.13-rc-alpine
+FROM debiansid/containers:python
 
 ENV PAGERMAID_DIR=/pagermaid
 ENV TZ=Asia/Shanghai
@@ -18,7 +18,6 @@ RUN apk add --no-cache git sudo imagemagick libmagic curl tzdata neofetch figlet
     && apk update \
     && wget https://repo.tlle.eu.org/alpine/v3.20/main/aarch64/s6-overlay-scripts-3.2.0.0-r0.apk \
     && apk add --no-cache s6-overlay \
-    && apk add mimalloc=${MIMALLOC_VERSION} \
     && apk add ./s6-overlay-scripts-3.2.0.0-r0.apk \
     && python -m pip install --upgrade pip \
     && pip install -r requirements.txt  --break-system-packages \
@@ -29,7 +28,7 @@ RUN apk add --no-cache git sudo imagemagick libmagic curl tzdata neofetch figlet
 
 
 ## run s6 as root
- ENV LD_PRELOAD=/lib/libmimalloc.so.2.1
+
  ENV MIMALLOC_LARGE_OS_PAGES=1
  ENV TERM=xterm
  USER root
